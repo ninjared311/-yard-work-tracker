@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Yard Work Tracker</title>
 <style>
-body{margin:0;background:#e8eee9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#173126}.app{max-width:390px;min-height:844px;margin:auto;background:#fff;position:relative}.status{height:32px;padding:8px 16px 0;font-weight:700;display:flex;justify-content:space-between}header{background:#167447;color:#fff;padding:16px 20px;display:flex;align-items:center}header h1{flex:1;margin:0;font-size:21px}.back{background:none;border:0;color:#fff;font-size:25px}.main{padding:16px 15px 85px}.status,.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.status,.cat,.card{border-radius:14px;padding:14px}.stat{text-align:center;background:#f2f7f3}.stat b{display:block;font-size:22px}.cat{border:0;color:#fff;text-align:left;min-height:85px;font-weight:800}.mow{background:#2d8757}.weed{background:#479b55}.eat{background:#e9772f}.other{background:#66727a}.cat small{display:block;margin-top:6px}.card{border:1px solid #dfe8e2;margin:8px 0}.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #e7eee9}.row:last-child{border:0}.grow{flex:1}.row small{display:block;color:#718078;margin-top:4px;font-size:11px}.btn{border:0;border-radius:8px;padding:7px 9px;font-weight:700}.green{background:#167447;color:#fff}.edit{background:#eef7f1;color:#167447}.del{background:#fff0f0;color:#bd3b3b}.nav{position:absolute;bottom:0;left:0;right:0;height:68px;background:#fff;border-top:1px solid #dfe8e2;display:flex;justify-content:space-around}.nav button{border:0;background:none;color:#68736d}.nav .active{color:#167447;font-weight:800}.nav i{display:block;font-style:normal;font-size:20px}.fab{position:absolute;right:17px;bottom:80px;border:0;border-radius:50%;width:52px;height:52px;background:#167447;color:#fff;font-size:28px}.sheetbg{display:none;position:absolute;inset:0;background:rgba(0,0,0,.2);align-items:flex-end}.sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px;width:100%;box-sizing:border-box}.sheet input,.sheet select,.sheet textarea{width:100%;padding:11px;margin:6px 0 13px;border:1px solid #dfe8e2;border-radius:9px;box-sizing:border-box}.save{width:100%;padding:13px;background:#167447;color:#fff;border:0;border-radius:10px;font-weight:800}
+body{margin:0;background:#e8eee9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#173126}.app{max-width:390px;min-height:844px;margin:auto;background:#fff;position:relative}.status{height:32px;padding:8px 16px 0;font-weight:700;display:flex;justify-content:space-between}header{background:#167447;color:#fff;padding:16px 20px;display:flex;align-items:center}header h1{flex:1;margin:0;font-size:21px}.back{background:none;border:0;color:#fff;font-size:25px}.main{padding:16px 15px 85px}.stats,.cats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat,.cat,.card{border-radius:14px;padding:14px}.stat{text-align:center;background:#f2f7f3}.stat b{display:block;font-size:22px}.cat{border:0;color:#fff;text-align:left;min-height:85px;font-weight:800}.mow{background:#2d8757}.weed{background:#479b55}.eat{background:#e9772f}.other{background:#66727a}.cat small{display:block;margin-top:6px}.card{border:1px solid #dfe8e2;margin:8px 0}.row{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #e7eee9}.row:last-child{border:0}.grow{flex:1}.row-title{display:flex;align-items:center;gap:8px;font-weight:800}.row small{display:block;color:#718078;margin-top:4px;font-size:11px}.task-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.chip{display:inline-flex;align-items:center;padding:4px 7px;border-radius:999px;font-size:10px;font-weight:700;background:#eef7f1;color:#1a5d3a}.chip.warn{background:#fff1df;color:#9a5c00}.chip.done{background:#e3f6e8;color:#0d6b3c}.btn{border:0;border-radius:8px;padding:7px 9px;font-weight:700}.green{background:#167447;color:#fff}.edit{background:#eef7f1;color:#167447}.del{background:#fff0f0;color:#bd3b3b}.secondary{background:#f3f5f4;color:#3f4b44}.nav{position:absolute;bottom:0;left:0;right:0;height:68px;background:#fff;border-top:1px solid #dfe8e2;display:flex;justify-content:space-around}.nav button{border:0;background:none;color:#68736d}.nav .active{color:#167447;font-weight:800}.nav i{display:block;font-style:normal;font-size:20px}.fab{position:absolute;right:17px;bottom:80px;border:0;border-radius:50%;width:52px;height:52px;background:#167447;color:#fff;font-size:28px}.sheetbg{display:none;position:absolute;inset:0;background:rgba(0,0,0,.2);align-items:flex-end}.sheet{background:#fff;border-radius:24px 24px 0 0;padding:20px;width:100%;box-sizing:border-box}.sheet input,.sheet select,.sheet textarea{width:100%;padding:11px;margin:6px 0 13px;border:1px solid #dfe8e2;border-radius:9px;box-sizing:border-box}.save{width:100%;padding:13px;background:#167447;color:#fff;border:0;border-radius:10px;font-weight:800}.muted{color:#718078}.add-inline{float:right;margin-top:-3px}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#2f6b3f">
@@ -51,15 +51,16 @@ function formatDate(value){
   if(!date) return "";
   return date.toLocaleDateString(undefined,{month:"short",day:"numeric"});
 }
+function formatDueDate(value){
+  const date=parseDate(value);
+  if(!date) return "";
+  return date.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
 function addDays(date,days){
-  const copy=new Date(date);
-  copy.setDate(copy.getDate()+days);
-  return copy;
+  const copy=new Date(date); copy.setDate(copy.getDate()+days); return copy;
 }
 function addMonths(date,months){
-  const copy=new Date(date);
-  copy.setMonth(copy.getMonth()+months);
-  return copy;
+  const copy=new Date(date); copy.setMonth(copy.getMonth()+months); return copy;
 }
 function getNextDueDate(task,completedDate){
   const repeat=(task[2]||"Weekly").toLowerCase();
@@ -71,20 +72,42 @@ function getNextDueDate(task,completedDate){
     case "monthly": return dateToISO(addMonths(base,1));
     case "seasonal":
     case "spring & fall": return dateToISO(addMonths(base,6));
+    case "as needed":
+    case "fall":
+    case "spring":
+      return "";
     default: return "";
   }
 }
+function getTaskStatus(task){
+  const last=task[3]; const next=task[4];
+  if(!last && !next) return "New task";
+  if(last && !next) return `Last completed ${formatDate(last)}`;
+  if(next){
+    const dueDate=parseDate(next);
+    const today=new Date();
+    const diff=Math.ceil((dueDate-today)/(1000*60*60*24));
+    if(diff <= 0) return "Due today";
+    if(diff === 1) return "Due tomorrow";
+    return `Due in ${diff} days`;
+  }
+  return "Ready";
+}
 function head(x,b=true){return `<header>${b?'<button class="back" onclick="home()">‹</button>':''}<h1>${x}</h1></header>`}
 function row(t,i){
-  const lastCompleted=t[3]?` · Last completed: ${formatDate(t[3])}`:"";
-  const nextDue=t[4]?` · Next due: ${formatDate(t[4])}`:"";
-  return `<div class="row"><span class="grow"><b>${ic[t[0]]} ${t[1]}</b><small>${t[0]} · ${t[2]}${lastCompleted}${nextDue}</small></span><button class="btn edit" onclick="edit(${i})">Edit</button><button class="btn green" onclick="complete(${i})">${done.has(i)?"Done":"Done"}</button></div>`;
+  const lastCompleted=t[3] ? `<span class="chip">Last: ${formatDate(t[3])}</span>` : "";
+  const nextDue=t[4] ? `<span class="chip ${done.has(i)?"done":"warn"}">Next: ${formatDueDate(t[4])}</span>` : "";
+  const status=done.has(i)?'<span class="chip done">Completed</span>':'<span class="chip">'+getTaskStatus(t)+'</span>';
+  const doneBtn=done.has(i) ? '<button class="btn secondary" onclick="undoComplete('+i+')">Undo</button>' : '<button class="btn green" onclick="complete('+i+')">Done</button>';
+  return `<div class="row"><span class="grow"><div class="row-title"><span>${ic[t[0]]} ${t[1]}</span></div><small>${t[0]} · ${t[2]}</small><div class="task-meta">${status}${lastCompleted}${nextDue}</div></span><button class="btn edit" onclick="edit(${i})">Edit</button>${doneBtn}</div>`;
 }
 function home(){
-  document.getElementById("screen").innerHTML=head("YARD WORK",false)+`<div class="main"><p style="color:#718078">Monday, September 21, 2026</p><div class="stats"><div class="stat"><b>3</b>Due Today</div><div class="stat"><b>5</b>Upcoming</div><div class="stat"><b>${done.size}</b>Completed</div></div><h2>Categories</h2><div class="cats">${["Mowing","Weeding","Weed Eating","Other"].map(c=>`<button class="cat ${c=="Mowing"?"mow":c=="Weeding"?"weed":c=="Weed Eating"?"eat":"other"}" onclick="category('${c}')">${ic[c]} ${c}<small>${tasks.filter(t=>t[0]==c).length} tasks</small></button>`).join("")}</div><h2>Due Today</h2><div class="card">${tasks.slice(0,3).map((t,i)=>row(t,i)).join("")}</div></div>`;
+  const completedCount=done.size;
+  const dueSoonCount=tasks.filter((t,i)=>!done.has(i) && t[4]).length;
+  document.getElementById("screen").innerHTML=head("YARD WORK",false)+`<div class="main"><p style="color:#718078">Monday, September 21, 2026</p><div class="stats"><div class="stat"><b>${dueSoonCount}</b>Due Soon</div><div class="stat"><b>${tasks.length}</b>Total Tasks</div><div class="stat"><b>${completedCount}</b>Completed</div></div><h2>Categories</h2><div class="cats">${["Mowing","Weeding","Weed Eating","Other"].map(c=>`<button class="cat ${c=="Mowing"?"mow":c=="Weeding"?"weed":c=="Weed Eating"?"eat":"other"}" onclick="category('${c}')">${ic[c]} ${c}<small>${tasks.filter(t=>t[0]==c).length} tasks</small></button>`).join("")}</div><h2>Due Today</h2><div class="card">${tasks.map((t,i)=>[t,i]).filter(x=>!done.has(x[1]) && x[0][4]).slice(0,3).map(x=>row(x[0],x[1])).join("") || '<p class="muted">No tasks due right now.</p>'}</div></div>`;
 }
 function category(c){document.getElementById("screen").innerHTML=head(c)+`<div class="main"><h2>${ic[c]} ${c}</h2><div class="card">${tasks.map((t,i)=>[t,i]).filter(x=>x[0][0]==c).map(x=>row(x[0],x[1])).join("")}</div></div>`}
-function manage(){document.getElementById("screen").innerHTML=head("Manage Tasks")+`<div class="main"><p style="color:#718078">Add, edit, or remove your yard-work duties.</p>${["Mowing","Weeding","Weed Eating","Other"].map(c=>`<div class="card"><h3>${ic[c]} ${c}<button class="btn green" onclick="addTask('${c}')">Add</button></h3>${tasks.map((t,i)=>[t,i]).filter(x=>x[0][0]==c).map(x=>row(x[0],x[1])).join("")}</div>`).join("")}</div>`}
+function manage(){document.getElementById("screen").innerHTML=head("Manage Tasks")+`<div class="main"><p style="color:#718078">Add, edit, or remove your yard-work duties.</p>${["Mowing","Weeding","Weed Eating","Other"].map(c=>`<div class="card"><h3>${ic[c]} ${c}<button class="btn green add-inline" onclick="addTask('${c}')">Add</button></h3>${tasks.map((t,i)=>[t,i]).filter(x=>x[0][0]==c).map(x=>row(x[0],x[1])).join("")}</div>`).join("")}</div>`}
 function addTask(c="Mowing"){form(-1,[c,"","Weekly"])}
 function edit(i){form(i,tasks[i])}
 function form(i,t){
@@ -110,6 +133,15 @@ function complete(i){
   task[3]=completedDate;
   task[4]=getNextDueDate(task,completedDate);
   done.add(i);
+  persist();
+  home();
+}
+function undoComplete(i){
+  const task=tasks[i];
+  if(!task) return;
+  done.delete(i);
+  task[3]="";
+  task[4]="";
   persist();
   home();
 }
