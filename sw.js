@@ -1,4 +1,4 @@
-const CACHE = 'yard-work-tracker-v9';
+const CACHE = 'yard-work-tracker-v10';
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -26,7 +26,11 @@ self.addEventListener('fetch', event => {
         return response.text().then(html => {
           let updated = html.replace(
             '</head>',
-            '<style>.nav{position:fixed!important;bottom:0;left:0;right:0}.main{padding-bottom:100px!important}.cat{align-items:center!important;text-align:center!important}.cat .cat-title,.cat small{width:100%;text-align:center}</style></head>'
+            '<style>.nav{position:fixed!important;bottom:0;left:0;right:0}.main{padding-bottom:100px!important}.cat{align-items:center!important;text-align:center!important}.cat .cat-title,.cat small{width:100%;text-align:center}.row .delete-inline{background:#fff0f0;color:#bd3b3b;border:0;border-radius:8px;padding:7px 9px;font-weight:700}</style></head>'
+          );
+          updated = updated.replace(
+            /(<button class="btn edit" onclick="edit\((\d+)\)">Edit<\/button>)/g,
+            '$1<button class="delete-inline" onclick="confirmDelete($2)">Delete</button>'
           );
           if (!updated.includes('id="sheet"')) {
             updated = updated.replace(
