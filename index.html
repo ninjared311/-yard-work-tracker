@@ -220,8 +220,14 @@ function undoComplete(i){
   renderCurrentView();
 }
 function closeSheet(e){
-  if(e && e.target && e.target.id!="bg") return;
-  document.getElementById("bg").style.display="none";
+  const bg = document.getElementById("bg");
+  if (!bg) return;
+
+  if (e && e.target && e.target.id !== "bg" && e.target !== bg) {
+    return;
+  }
+
+  bg.style.display = "none";
 }
 function calendar(){
   activeView='calendar';
