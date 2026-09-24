@@ -1,4 +1,4 @@
-const CACHE = 'yard-work-tracker-v4';
+const CACHE = 'yard-work-tracker-v5';
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -24,18 +24,10 @@ self.addEventListener('fetch', event => {
       fetch(request).then(response => {
         if (!response.ok) return response;
         return response.text().then(html => {
-          const patch = `<script>
-            (function(){
-              const originalComplete = window.complete;
-              if (typeof originalComplete !== 'function') return;
-              window.complete = function(index) {
-                const stayOnTasks = (document.getElementById('screen')?.textContent || '').includes('Manage Tasks');
-                originalComplete(index);
-                if (stayOnTasks) manage();
-              };
-            })();
-          <\\/script>`;
-          const updated = html.includes('</body>') ? html.replace('</body>', patch + '</body>') : html + patch;
+          const updated = html.replace(
+            'Mowing:"🚜"',
+            'Mowing:"<span aria-label=\"red zero-turn mower\" title=\"Red zero-turn mower\">🔴🛞</span>"'
+          );
           return new Response(updated, {
             status: response.status,
             statusText: response.statusText,
