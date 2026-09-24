@@ -1,4 +1,4 @@
-const CACHE = 'yard-work-tracker-v2';
+const CACHE = 'yard-work-tracker-v3';
 
 const ASSETS = [
   './',
