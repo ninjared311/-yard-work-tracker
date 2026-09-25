@@ -1,4 +1,4 @@
-const CACHE = 'yard-work-tracker-v13';
+const CACHE = 'yard-work-tracker-v14';
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -24,10 +24,20 @@ self.addEventListener('fetch', event => {
       fetch(request).then(response => {
         if (!response.ok) return response;
         return response.text().then(html => {
-          const updated = html.replace(
+          let updated = html.replace(
             '</head>',
             '<style>.nav{position:fixed!important;bottom:0;left:0;right:0}.main{padding-bottom:100px!important}.cat{align-items:center!important;text-align:center!important}.cat .cat-title,.cat small{width:100%;text-align:center}</style></head>'
           );
+
+          // Ensure the edit dialog elements exist. Older cached index.html files
+          // may call form() without containing the modal markup in the body.
+          if (!updated.includes('id="bg"')) {
+            updated = updated.replace(
+              '</div></body>',
+              '<div class="sheetbg" id="bg" onclick="closeSheet(event)"><div class="sheet" id="sheet" onclick="event.stopPropagation()"></div></div></div></body>'
+            );
+          }
+
           return new Response(updated, {
             status: response.status,
             statusText: response.statusText,
