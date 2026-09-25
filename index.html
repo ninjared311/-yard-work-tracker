@@ -107,6 +107,21 @@ function addDays(date,days){
 function addMonths(date,months){
   const copy=new Date(date); copy.setMonth(copy.getMonth()+months); return copy;
 }
+function isRecurringTask(task){
+  const repeat=(task[2]||"Weekly").toLowerCase();
+  return !["as needed","seasonal","spring & fall","spring","fall"].includes(repeat);
+}
+function isTaskDueToday(task, index){
+  if(done.has(index)) return false;
+  if(task[4]){
+    const dueDate=parseDate(task[4]);
+    if(!dueDate) return false;
+    const today=new Date();
+    const diff=Math.ceil((dueDate-today)/(1000*60*60*24));
+    return diff <= 0;
+  }
+  return !task[3] && isRecurringTask(task);
+}
 function getNextDueDate(task,completedDate){
   const repeat=(task[2]||"Weekly").toLowerCase();
   const base=parseDate(completedDate)||new Date();
@@ -159,7 +174,8 @@ function home(){
   const dueSoonCount=tasks.filter((t,i)=>!done.has(i) && t[4]).length;
   const cats=["Mowing","Weeding","Weed Eating","Other"];
   const todayLabel=formatLongDate(new Date());
-  document.getElementById("screen").innerHTML=head("YARD WORK TRACKER",false)+`<div class="main"><p style="color:#718078">${todayLabel}</p><div class="stats"><div class="stat"><b>${dueSoonCount}</b><br>Due Soon</div><div class="stat"><b>${tasks.length}</b><br>Total Tasks</div><div class="stat"><b>${completedCount}</b><br>Completed</div></div><h2>Categories</h2><div class="cats">${cats.map(c=>`<button class="cat ${c=="Mowing"?"mow":c=="Weeding"?"weed":c=="Weed Eating"?"eat":"other"}" onclick="category('${c}')"><span class="task-icon">${displayIcon(c)}</span><span class="cat-title">${c}</span><small>${tasks.filter(t=>t[0]==c).length} tasks</small></button>`).join("")}</div><h2>Due Today</h2><div class="card">${tasks.map((t,i)=>[t,i]).filter(x=>!done.has(x[1]) && x[0][4]).slice(0,3).map(x=>row(x[0],x[1])).join("") || '<p class="muted">No tasks due right now.</p>'}</div></div>`;
+  const dueTodayTasks=tasks.map((t,i)=>[t,i]).filter(([task,index])=>isTaskDueToday(task,index));
+  document.getElementById("screen").innerHTML=head("YARD WORK TRACKER",false)+`<div class="main"><p style="color:#718078">${todayLabel}</p><div class="stats"><div class="stat"><b>${dueSoonCount}</b><br>Due Soon</div><div class="stat"><b>${tasks.length}</b><br>Total Tasks</div><div class="stat"><b>${completedCount}</b><br>Completed</div></div><h2>Categories</h2><div class="cats">${cats.map(c=>`<button class="cat ${c=="Mowing"?"mow":c=="Weeding"?"weed":c=="Weed Eating"?"eat":"other"}" onclick="category('${c}')"><span class="task-icon">${displayIcon(c)}</span><span class="cat-title">${c}</span><small>${tasks.filter(t=>t[0]==c).length} tasks</small></button>`).join("")}</div><h2>Due Today</h2><div class="card">${dueTodayTasks.map(([t,i])=>row(t,i)).join("") || '<p class="muted">No tasks due right now.</p>'}</div></div>`;
 }
 function category(c){
   activeView='category';
@@ -198,7 +214,6 @@ function save(i){
   const r=document.getElementById("r").value;
   const lastCompleted=document.getElementById("last").value;
   if(!n)return;
-  const existing=i>=0?tasks[i]:["Other","","Weekly","",""];
   const item=[c,n,r,lastCompleted||"",""];
   if(lastCompleted){
     item[4]=getNextDueDate(item,lastCompleted);
