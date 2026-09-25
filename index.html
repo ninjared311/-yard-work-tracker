@@ -8,7 +8,7 @@ body{margin:0;background:#e8eee9;font-family:-apple-system,BlinkMacSystemFont,"S
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Yard Work">
 <link rel="apple-touch-icon" href="icon-192.png">
-</head><body><div class="app"><div class="status"><span>9:41</span><span>●●● ▰</span></div><div id="screen"></div><div class="nav"><button class="active" onclick="home()"><i>⌂</i>Home</button><button onclick="manage()"><i>☑</i>Tasks</button><button onclick="calendar()"><i>📅</i>Calendar</button><button onclick="mapView()"><i>🗺</i>Yard Map</button></div></div>
+</head><body><div class="app"><div class="status"><span>9:41</span><span>●●● ▰</span></div><div id="screen"></div><div class="sheetbg" id="bg" onclick="closeSheet(event)"><div class="sheet" id="sheet" onclick="event.stopPropagation()"></div></div><div class="nav"><button class="active" onclick="home()"><i>⌂</i>Home</button><button onclick="manage()"><i>☑</i>Tasks</button><button onclick="calendar()"><i>📅</i>Calendar</button><button onclick="mapView()"><i>🗺</i>Yard Map</button></div></div>
 <script>
 const defaultTasks=[["Mowing","Front Lawn","Weekly"],["Mowing","Back Lawn","Weekly"],["Mowing","Side Yard","Every 2 weeks"],["Weeding","Garden Beds","Weekly"],["Weeding","Around Shrubs","Every 2 weeks"],["Weed Eating","Around House","Weekly"],["Weed Eating","Fence Lines","Every 2 weeks"],["Other","Trim Shrubs","Monthly"],["Other","Clean Gutters","Seasonal"],["Other","Leaf Cleanup","Fall"]];
 let tasks=loadTasks(), done=loadDone();
