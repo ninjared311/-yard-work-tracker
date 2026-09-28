@@ -1,4 +1,4 @@
-const CACHE = 'yard-work-tracker-v16';
+const CACHE = 'yard-work-tracker-v17';
 const ASSETS = ['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install', event => {
@@ -25,6 +25,10 @@ self.addEventListener('fetch', event => {
         if (!response.ok) return response;
         return response.text().then(html => {
           let updated = html.replace(
+            'const date=new Date(value);',
+            'const date=/^\\d{4}-\\d{2}-\\d{2}$/.test(value)?new Date(value+"T00:00:00"):new Date(value);'
+          );
+          updated = updated.replace(
             '</head>',
             '<style>.nav{position:fixed!important;bottom:0;left:0;right:0}.main{padding-bottom:100px!important}.main>p:first-child{margin-top:0!important}.cat{align-items:center!important;text-align:center!important}.cat .cat-title,.cat small{width:100%;text-align:center}.sheetbg{z-index:10}</style></head>'
           );
